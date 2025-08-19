@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ProductCard from './ProductCard';
 import { products } from '../mock/mock';
 
-
+const suportLevelOptions = ["Email", "Priority email", "Phone and email"];
 
 const ProductList = ({ isLogin  }) => {
     const [productList, setProductList] = useState(products);
@@ -11,9 +11,10 @@ const ProductList = ({ isLogin  }) => {
     const [monthtPrice, setMonthtPrice] = useState(0)
     const [userLimit, setUseLimit] = useState(0)
     const [memoryLimit, setMemoryLimit] = useState(0)
-    const [suportLevel, setSuportLevel] = useState("Email")
-    const [hasHelpCenter, serHasHelpCenter] = useState(true)
+    const [suportLevel, setSuportLevel] = useState(suportLevelOptions[0])
+    const [hasHelpCenter, setHasHelpCenter] = useState(true)
     const [buttonText, setButtonText] = useState("")
+
 
     const handlePlanChange = (e) => {
         setPlan(e.target.value)
@@ -36,7 +37,7 @@ const ProductList = ({ isLogin  }) => {
     }
 
     const handleHasHelpCenterChange = (e) => {
-        serHasHelpCenter(e.target.value === "Yes");
+        setHasHelpCenter(e.target.value === "Yes");
     }
 
     const handleButtonTextChange = (e) => {
@@ -70,7 +71,7 @@ const ProductList = ({ isLogin  }) => {
         setMemoryLimit(0)
         setUseLimit(0)
         setSuportLevel("Email")
-        serHasHelpCenter(true)
+        setHasHelpCenter(true)
         setButtonText("")
     }
 
@@ -125,9 +126,9 @@ const ProductList = ({ isLogin  }) => {
                             value={suportLevel}
                             onChange={(e) => handleSuportLevelChange(e)}
                             id="supportLevel">
-                                <option>Email</option>
-                                <option>Priority email</option>
-                                <option>Phone and email</option>
+                                {suportLevelOptions.map((level, index) => (
+                                    <option key={index} value={level}>{level}</option>
+                                ))}
                         </select>
                     </div>
                     <div className="form-group">

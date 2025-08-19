@@ -10,6 +10,10 @@ const ProductCard = (props) => {
         suport,
         hasHelpCenter,
         btnTitle } = props
+
+        console.log(typeof hasHelpCenter);
+        
+        
     return (
         <div className="card mb-4 text-center box-shadow">
             <div className="card-header">

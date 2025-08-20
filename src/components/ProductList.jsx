@@ -1,27 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import ProductCard from './ProductCard';
 import { products } from '../mock/mock';
+import ComparePlanTable from './CompareTable';
 
-const suportLevelOptions = ["Email", "Priority email", "Phone and email"];
+const supportLevelOptions = ["Email", "Priority email", "Phone and email"];
 
 const ProductList = ({ isLogin  }) => {
     const [productList, setProductList] = useState(products);
     const [plan, setPlan] = useState("")
-    const [monthtPrice, setMonthtPrice] = useState(0)
+    const [monthPrice, setmonthPrice] = useState(0)
     const [userLimit, setUseLimit] = useState(0)
     const [memoryLimit, setMemoryLimit] = useState(0)
-    const [suportLevel, setSuportLevel] = useState(suportLevelOptions[0])
-    const [hasHelpCenter, setHasHelpCenter] = useState(true)
-    const [buttonText, setButtonText] = useState("")
+    const [supportLevel, setSuportLevel] = useState(supportLevelOptions[0])
+    const [hasHelpCenter, setHasHelpCenter] = useState("Yes")
+    const [сhosenPlan, setChosenPlan] = useState({})
+    const prevPlan = useRef(null)
 
 
     const handlePlanChange = (e) => {
         setPlan(e.target.value)
     }
 
-    const handleMonthtPriceChange = (e) => {
-        setMonthtPrice(e.target.value)
+    const handlemonthPriceChange = (e) => {
+        setmonthPrice(e.target.value)
     }
 
     const handleUserLimitChange = (e) => {
@@ -37,11 +39,7 @@ const ProductList = ({ isLogin  }) => {
     }
 
     const handleHasHelpCenterChange = (e) => {
-        setHasHelpCenter(e.target.value === "Yes");
-    }
-
-    const handleButtonTextChange = (e) => {
-        setButtonText(e.target.value)
+        setHasHelpCenter(e.target.value);
     }
 
     const handleAddProduct = (e) => {
@@ -49,16 +47,13 @@ const ProductList = ({ isLogin  }) => {
 
         const newProduct = {
             plan,
-            monthtPrice,
+            monthPrice,
             userLimit,
             memoryLimit,
-            suport: suportLevel,
+            support: supportLevel,
             hasHelpCenter,
-            btnTitle: buttonText
-        }
-
-        console.log(newProduct);
-        
+            isSelected: false
+        }       
 
         setProductList(productList => [...productList, newProduct]);
         resetForm();
@@ -67,16 +62,37 @@ const ProductList = ({ isLogin  }) => {
 
     const resetForm = () => {
         setPlan("")
-        setMonthtPrice(0)
+        setmonthPrice(0)
         setMemoryLimit(0)
         setUseLimit(0)
         setSuportLevel("Email")
         setHasHelpCenter(true)
-        setButtonText("")
     }
+
+    const setSelectedPlan = (selectedPlan) => {
+        return productList.map(product => ({
+                ...product,
+                isSelectedPlan: product.plan === selectedPlan.plan
+            }
+        ))
+    } 
+
+    const handleChosenPlan = (plan) => {
+        setProductList(setSelectedPlan(plan))
+        setChosenPlan(plan);
+    };
+
+    useEffect(() => {
+        if (сhosenPlan && сhosenPlan.plan) {
+            prevPlan.current = {...сhosenPlan};
+        }
+
+    }, [сhosenPlan]);
 
     return (
         <>
+            <ComparePlanTable current={сhosenPlan} prev={prevPlan.current} />
+
             {isLogin && <div className="mb-4">
                 <form className="w-100" onSubmit={handleAddProduct}>
                     <div className="form-group">
@@ -94,8 +110,8 @@ const ProductList = ({ isLogin  }) => {
                         <input
                             type="number"
                             className="form-control"
-                            value={monthtPrice}
-                            onChange={handleMonthtPriceChange}
+                            value={monthPrice}
+                            onChange={handlemonthPriceChange}
                             min="0"
                             id="monthlyPrice"/>
                     </div>
@@ -123,10 +139,10 @@ const ProductList = ({ isLogin  }) => {
                         <label htmlFor="supportLevel">Support Level</label>
                         <select
                             className="form-control"
-                            value={suportLevel}
+                            value={supportLevel}
                             onChange={(e) => handleSuportLevelChange(e)}
                             id="supportLevel">
-                                {suportLevelOptions.map((level, index) => (
+                                {supportLevelOptions.map((level, index) => (
                                     <option key={index} value={level}>{level}</option>
                                 ))}
                         </select>
@@ -142,15 +158,6 @@ const ProductList = ({ isLogin  }) => {
                             <option>No</option>
                         </select>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="buttonText">Button Text</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            value={buttonText}
-                            onChange={handleButtonTextChange} 
-                            id="buttonText"/>
-                    </div>
                     <div className="d-flex justify-content-end">
                         <button className="btn btn-primary" type="submit">
                             Add Product
@@ -163,7 +170,7 @@ const ProductList = ({ isLogin  }) => {
                 {productList.map((product, index) => {
                     return (
                         <div key={index} className="col-md-4 mb-3">
-                            <ProductCard {...product} />
+                            <ProductCard {...product} onPlanChange={handleChosenPlan} />
                         </div>
                     )
                 })}

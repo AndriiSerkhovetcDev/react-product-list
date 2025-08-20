@@ -1,34 +1,34 @@
 export const appSettings = {
-    isLogin: true,
+    isLogin: false,
 }
 
 export const products = [
     {
         plan: "Free",
-        monthtPrice: 0,
+        monthPrice: 0,
         userLimit: 10,
         memoryLimit: 2,
-        suport: "Email",
-        hasHelpCenter: true,
-        btnTitle: "Sing up for free"
+        support: "Email",
+        hasHelpCenter: "Yes",
+        isSelectedPlan: false
     },
     {
         plan: "Pro",
-        monthtPrice: 15,
+        monthPrice: 15,
         userLimit: 20,
         memoryLimit: 10,
-        suport: "Priority email",
-        hasHelpCenter: true,
-        btnTitle: "Get started"
+        support: "Priority email",
+        hasHelpCenter: "Yes",
+        isSelectedPlan: false
     },
     {
         plan: "Enterprise",
-        monthtPrice: 29,
+        monthPrice: 29,
         userLimit: 30,
         memoryLimit: 15,
-        suport: "Phone and email",
-        hasHelpCenter: true,
-        btnTitle: "Contatct us"
+        support: "Phone and email",
+        hasHelpCenter: "Yes",
+        isSelectedPlan: false
     },
 ]
 
@@ -79,3 +79,32 @@ export const footerLinks = [
     ]
   }
 ];
+
+
+ export const compareTableParams = [
+        {
+            label: "Month Price ($)",
+            key: "monthPrice",
+            type: "number",
+        },
+        {
+            label: "User Limit (users)",
+            key: "userLimit",
+            type: "number",
+        },
+        {
+            label: "Memory storage (GB)",
+            key: "memoryLimit",
+            type: "number",
+        },
+        {
+            label: "Support",
+            key: "support",
+            type: "string",
+        },
+        {
+            label: "Help Center",
+            key: "hasHelpCenter",
+            type: "string",
+        },
+    ];

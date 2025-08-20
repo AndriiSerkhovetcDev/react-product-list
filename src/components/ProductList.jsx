@@ -9,7 +9,7 @@ const supportLevelOptions = ["Email", "Priority email", "Phone and email"];
 const ProductList = ({ isLogin  }) => {
     const [productList, setProductList] = useState(products);
     const [plan, setPlan] = useState("")
-    const [monthPrice, setmonthPrice] = useState(0)
+    const [monthPrice, setMonthPrice] = useState(0)
     const [userLimit, setUseLimit] = useState(0)
     const [memoryLimit, setMemoryLimit] = useState(0)
     const [supportLevel, setSuportLevel] = useState(supportLevelOptions[0])
@@ -23,7 +23,7 @@ const ProductList = ({ isLogin  }) => {
     }
 
     const handlemonthPriceChange = (e) => {
-        setmonthPrice(e.target.value)
+        setMonthPrice(e.target.value)
     }
 
     const handleUserLimitChange = (e) => {
@@ -62,7 +62,7 @@ const ProductList = ({ isLogin  }) => {
 
     const resetForm = () => {
         setPlan("")
-        setmonthPrice(0)
+        setMonthPrice(0)
         setMemoryLimit(0)
         setUseLimit(0)
         setSuportLevel("Email")
